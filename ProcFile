@@ -1,2 +1,2 @@
-web: gunocron PSM_P_E.wsgi
+web: python manage.py runserver 
 
