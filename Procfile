@@ -1,1 +1,1 @@
-web: gunicorn PSM_P_E.wsgi --log-file
+web: gunicorn PSM_P_E.wsgi
