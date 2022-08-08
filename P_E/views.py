@@ -27,9 +27,8 @@ def get_events(request):
     # print(request.method)
     if request.method == 'POST' or request.method == 'OPTIONS':
         word=str(request.data['search']).lower()
-        if word[0]=='/':
-            word=word[1:]
-        print(word)
+        # if word[0]=='/':
+        #     word=word[1:]
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.contains(word[1:-1],case=False,na=False)
@@ -90,7 +89,6 @@ def get_products(request):
         word=str(request.data['search']).lower()
         if word[0]=='/':
             word=word[1:]
-        print(word)
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
             temp_data=lower_drug_data['Drug_Name'].str.contains(word[1:-1],case=False,na=False)
