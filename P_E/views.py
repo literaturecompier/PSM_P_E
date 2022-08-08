@@ -31,14 +31,17 @@ def get_events(request):
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.contains(word[1:-1],case=False,na=False)
-        elif word[-1]=='%':
-            # print(word[:-1])
-            temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[:-1],na=False)
         elif word[0]=='%':
-            temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[1:],na=False)
+            # print(word[:-1])
+            temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[1:],na=False)
+        elif word[-1]=='%':
+            temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[:-1],na=False)
         else:
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word,na=False)
         new_data=data[temp_data]
+        for t in range(len(new_data)):
+            if new_data['LLT_CURRENCY'].iat[t]=='N':
+                new_data['LLT_NAME_ENGLISH'].iat[t]='*'+new_data['LLT_NAME_ENGLISH'].iat[t]
         new_data=new_data[['SOC_CODE','SOC_NAME','HLGT_CODE','HLGT_NAME','HLT_CODE','HLT_NAME','PT_CODE','PT_NAME','LLT_CODE','LLT_NAME_ENGLISH']]
         new_data=new_data.set_index('SOC_CODE')
         new_data=new_data.reset_index()
@@ -46,19 +49,26 @@ def get_events(request):
         return JsonResponse({'searched_data':[new_data.loc[_].to_dict() for _ in range(len(new_data))]})
 
     if request.method == 'GET':
-        word=str(request.GET.get('search'))[1:].lower()
+        word=str(request.GET.get('search')).lower()
         print(word)
+        print(word[0])
+        print(word[-1])
         if word[0]=='%' and word[-1]=='%':
-            # print(word[1:-1])
+            # print('two ')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.contains(word[1:-1],case=False,na=False)
-        elif word[-1]=='%':
-            # print(word[:-1])
-            temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[:-1],na=False)
         elif word[0]=='%':
-            temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[1:],na=False)
+            # print('ends')
+            temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[1:],na=False)
+        elif word[-1]=='%':
+            # print('start')
+            temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[:-1],na=False)
         else:
+            # print('regular')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word,na=False)
         new_data=data[temp_data]
+        for t in range(len(new_data)):
+            if new_data['LLT_CURRENCY'].iat[t]=='N':
+                new_data['LLT_NAME_ENGLISH'].iat[t]='*'+new_data['LLT_NAME_ENGLISH'].iat[t]
         new_data=new_data[['SOC_CODE','SOC_NAME','HLGT_CODE','HLGT_NAME','HLT_CODE','HLT_NAME','PT_CODE','PT_NAME','LLT_CODE','LLT_NAME_ENGLISH']]
         new_data=new_data.set_index('SOC_CODE')
         new_data=new_data.reset_index()
@@ -78,11 +88,11 @@ def get_products(request):
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
             temp_data=lower_drug_data['Drug_Name'].str.contains(word[1:-1],case=False,na=False)
-        elif word[-1]=='%':
-            # print(word[:-1])
-            temp_data=lower_drug_data['Drug_Name'].str.endswith(word[:-1],na=False)
         elif word[0]=='%':
-            temp_data=lower_drug_data['Drug_Name'].str.startswith(word[1:],na=False)
+            # print(word[:-1])
+            temp_data=lower_drug_data['Drug_Name'].str.endswith(word[1:],na=False)
+        elif word[-1]=='%':
+            temp_data=lower_drug_data['Drug_Name'].str.startswith(word[:-1],na=False)
         else:
             temp_data=lower_drug_data['Drug_Name'].str.startswith(word,na=False)
         new_data=drug_data[temp_data]
@@ -93,17 +103,17 @@ def get_products(request):
         return JsonResponse({'searched_data':new_data['Drug_Name'].tolist()})
 
     if request.method == 'GET':
-        word=str(request.GET.get('search'))[1:].lower()
+        word=str(request.GET.get('search')).lower()
         print(word)
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
             temp_data=lower_drug_data['Drug_Name'].str.contains(word[1:-1],case=False,na=False)
-        elif word[-1]=='%':
-            # print(word[:-1])
-            # print(word[:-1])
-            temp_data=lower_drug_data['Drug_Name'].str.endswith(word[:-1],na=False)
         elif word[0]=='%':
-            temp_data=lower_drug_data['Drug_Name'].str.startswith(word[1:],na=False)
+            # print(word[:-1])
+            # print(word[:-1])
+            temp_data=lower_drug_data['Drug_Name'].str.endswith(word[1:],na=False)
+        elif word[-1]=='%':
+            temp_data=lower_drug_data['Drug_Name'].str.startswith(word[:-1],na=False)
         else:
             temp_data=lower_drug_data['Drug_Name'].str.startswith(word,na=False)
         new_data=drug_data[temp_data]
