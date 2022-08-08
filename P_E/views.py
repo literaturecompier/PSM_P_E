@@ -1,6 +1,4 @@
 from django.shortcuts import render
-
-
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt,ensure_csrf_cookie
@@ -24,16 +22,13 @@ for t in lower_drug_data.columns:
 @csrf_exempt
 @api_view(['POST','OPTIONS','GET'])
 def get_events(request):
-    # print(request.method)
     if request.method == 'POST' or request.method == 'OPTIONS':
         word=str(request.data['search']).lower()
-        # if word[0]=='/':
-        #     word=word[1:]
+        if word[0]=='/':
+            word=word[1:]
         if word[0]=='%' and word[-1]=='%':
-            # print(word[1:-1])
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.contains(word[1:-1],case=False,na=False)
         elif word[0]=='%':
-            # print(word[:-1])
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[1:],na=False)
         elif word[-1]=='%':
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[:-1],na=False)
@@ -46,27 +41,19 @@ def get_events(request):
         new_data=new_data[['SOC_CODE','SOC_NAME','HLGT_CODE','HLGT_NAME','HLT_CODE','HLT_NAME','PT_CODE','PT_NAME','LLT_CODE','LLT_NAME_ENGLISH']]
         new_data=new_data.set_index('SOC_CODE')
         new_data=new_data.reset_index()
-        # print(new_data)
         return JsonResponse({'searched_data':[new_data.loc[_].to_dict() for _ in range(len(new_data))]})
 
     if request.method == 'GET':
         word=str(request.GET.get('search')).lower()
         if word[0]=='/':
             word=word[1:]
-        print(word)
-        print(word[0])
-        print(word[-1])
         if word[0]=='%' and word[-1]=='%':
-            # print('two ')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.contains(word[1:-1],case=False,na=False)
         elif word[0]=='%':
-            # print('ends')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.endswith(word[1:],na=False)
         elif word[-1]=='%':
-            # print('start')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word[:-1],na=False)
         else:
-            # print('regular')
             temp_data=lower_data['LLT_NAME_ENGLISH'].str.startswith(word,na=False)
         new_data=data[temp_data]
         for t in range(len(new_data)):
@@ -75,7 +62,6 @@ def get_events(request):
         new_data=new_data[['SOC_CODE','SOC_NAME','HLGT_CODE','HLGT_NAME','HLT_CODE','HLT_NAME','PT_CODE','PT_NAME','LLT_CODE','LLT_NAME_ENGLISH']]
         new_data=new_data.set_index('SOC_CODE')
         new_data=new_data.reset_index()
-        # print(new_data)
         return JsonResponse({'searched_data':[new_data.loc[_].to_dict() for _ in range(len(new_data))]})
 
 
@@ -90,10 +76,8 @@ def get_products(request):
         if word[0]=='/':
             word=word[1:]
         if word[0]=='%' and word[-1]=='%':
-            # print(word[1:-1])
             temp_data=lower_drug_data['Drug_Name'].str.contains(word[1:-1],case=False,na=False)
         elif word[0]=='%':
-            # print(word[:-1])
             temp_data=lower_drug_data['Drug_Name'].str.endswith(word[1:],na=False)
         elif word[-1]=='%':
             temp_data=lower_drug_data['Drug_Name'].str.startswith(word[:-1],na=False)
@@ -112,11 +96,8 @@ def get_products(request):
             word=word[1:]
         print(word)
         if word[0]=='%' and word[-1]=='%':
-            # print(word[1:-1])
             temp_data=lower_drug_data['Drug_Name'].str.contains(word[1:-1],case=False,na=False)
         elif word[0]=='%':
-            # print(word[:-1])
-            # print(word[:-1])
             temp_data=lower_drug_data['Drug_Name'].str.endswith(word[1:],na=False)
         elif word[-1]=='%':
             temp_data=lower_drug_data['Drug_Name'].str.startswith(word[:-1],na=False)
