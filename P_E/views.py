@@ -27,6 +27,8 @@ def get_events(request):
     # print(request.method)
     if request.method == 'POST' or request.method == 'OPTIONS':
         word=str(request.data['search']).lower()
+        if word[0]=='/':
+            word=word[1:]
         print(word)
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
@@ -50,6 +52,8 @@ def get_events(request):
 
     if request.method == 'GET':
         word=str(request.GET.get('search')).lower()
+        if word[0]=='/':
+            word=word[1:]
         print(word)
         print(word[0])
         print(word[-1])
@@ -84,6 +88,8 @@ def get_products(request):
     # print(request.GET.get('search')) 
     if request.method == 'POST'  or request.method == 'OPTIONS':
         word=str(request.data['search']).lower()
+        if word[0]=='/':
+            word=word[1:]
         print(word)
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
@@ -104,6 +110,8 @@ def get_products(request):
 
     if request.method == 'GET':
         word=str(request.GET.get('search')).lower()
+        if word[0]=='/':
+            word=word[1:]
         print(word)
         if word[0]=='%' and word[-1]=='%':
             # print(word[1:-1])
